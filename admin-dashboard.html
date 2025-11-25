@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - R.M. Ayam Kalasan</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-red': '#DC2626',
+                        'dark-gray-text': '#333333',
+                        'light-gray-bg': '#F4F7F9', // Warna latar belakang admin
+                        'accent-green': '#10B981', // Warna untuk sukses
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-light-gray-bg text-dark-gray-text">
+
+    <div class="flex h-screen bg-gray-100">
+        
+        <div class="w-64 bg-dark-gray-text text-white flex flex-col">
+            <div class="p-4 text-2xl font-bold text-primary-red border-b border-gray-700">
+                Admin Panel
+            </div>
+            <nav class="flex-1 p-4 space-y-2">
+                <a href="admin-dashboard.html" class="block px-4 py-2 rounded-lg bg-primary-red font-semibold">
+                    Daftar Menu
+                </a>
+                <a href="admin-kelola-promo.html" class="block px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200">
+                    Kelola Promo
+                </a>
+                <a href="admin-pesanan.html" class="block px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200">
+                    Pesanan
+                </a>
+                <a href="admin-pengaturan.html" class="block px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200">
+                    Pengaturan
+                </a>
+            </nav>
+            <div class="p-4 border-t border-gray-700">
+                <a href="index.html" class="w-full text-left py-2 text-red-400 hover:text-red-300 block">
+                    Logout
+                </a>
+            </div>
+        </div>
+
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="bg-white shadow p-4 flex justify-between items-center">
+                <h1 class="text-xl font-semibold">Dashboard / Daftar Menu</h1>
+                <span class="text-sm text-gray-600">Halo, Admin!</span>
+            </header>
+
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-dark-gray-text">Kelola Menu Makanan</h2>
+                        <button id="add-menu-btn" class="bg-accent-green text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-600 transition duration-300 shadow-md">
+                            + Tambah Menu Baru
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Produk</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga (Rp)</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="menu-table-body" class="bg-white divide-y divide-gray-200">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <div id="crud-modal" class="hidden fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 id="modal-title" class="text-xl font-bold">Tambah Menu Baru</h3>
+                <button id="close-modal-btn" class="text-gray-500 hover:text-red-500">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <form id="menu-form">
+                <input type="hidden" id="menu-id">
+                
+                <div class="mb-4">
+                    <label for="menu-name" class="block text-sm font-medium text-gray-700">Nama Produk</label>
+                    <input type="text" id="menu-name" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="menu-price" class="block text-sm font-medium text-gray-700">Harga (Rp)</label>
+                    <input type="number" id="menu-price" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="menu-category" class="block text-sm font-medium text-gray-700">Kategori</label>
+                    <select id="menu-category" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 bg-white">
+                        <option value="ayam">Ayam Kalasan Spesial</option>
+                        <option value="pendamping">Nasi & Pendamping</option>
+                        <option value="minuman">Minuman Segar</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="menu-desc" class="block text-sm font-medium text-gray-700">Deskripsi</label>
+                    <textarea id="menu-desc" rows="3" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label for="menu-image" class="block text-sm font-medium text-gray-700">URL Gambar (Placeholder)</label>
+                    <input type="text" id="menu-image" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" placeholder="contoh: public/images/menu-baru.jpg">
+                </div>
+                
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancel-modal-btn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">Batal</button>
+                    <button type="submit" id="save-menu-btn" class="px-4 py-2 bg-primary-red text-white rounded-lg font-semibold hover:bg-red-700">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Data Menu Simulasi (Ini akan diganti dengan pemanggilan API ke Back-end)
+            let menuData = [
+                { id: 1, name: 'Ayam Kalasan Original', price: 25000, category: 'ayam', desc: 'Ayam Kalasan otentik', image: 'public/images/menu-ayam-original.jpg' },
+                { id: 2, name: 'Es Teh Manis', price: 5000, category: 'minuman', desc: 'Teh segar', image: 'public/images/menu-es-teh.jpg' },
+                { id: 3, name: 'Nasi Putih Hangat', price: 6000, category: 'pendamping', desc: 'Nasi pulen', image: 'public/images/menu-nasi-putih.jpg' },
+            ];
+            let nextId = 4; // Untuk item baru
+
+            const tableBody = document.getElementById('menu-table-body');
+            const addMenuBtn = document.getElementById('add-menu-btn');
+            const crudModal = document.getElementById('crud-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const cancelModalBtn = document.getElementById('cancel-modal-btn');
+            const modalTitle = document.getElementById('modal-title');
+            const menuForm = document.getElementById('menu-form');
+
+            // --- FUNGSI UTAMA ---
+
+            // Fungsi R (Read): Render Tabel
+            function renderTable() {
+                tableBody.innerHTML = '';
+                menuData.forEach(item => {
+                    const row = tableBody.insertRow();
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${item.name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${item.price.toLocaleString('id-ID')}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatCategory(item.category)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                            <button data-id="${item.id}" class="edit-btn text-indigo-600 hover:text-indigo-900 mr-3">Edit</button>
+                            <button data-id="${item.id}" class="delete-btn text-red-600 hover:text-red-900">Hapus</button>
+                        </td>
+                    `;
+                });
+                // Attach event listeners to new buttons
+                attachTableListeners();
+            }
+
+            // Fungsi Tambahan: Mengubah kategori singkat menjadi nama panjang
+            function formatCategory(category) {
+                switch (category) {
+                    case 'ayam': return 'Ayam Kalasan Spesial';
+                    case 'pendamping': return 'Nasi & Pendamping';
+                    case 'minuman': return 'Minuman Segar';
+                    default: return category;
+                }
+            }
+
+            // Fungsi C/U (Create/Update): Handle Form Submission
+            menuForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const id = document.getElementById('menu-id').value;
+                const name = document.getElementById('menu-name').value;
+                const price = parseInt(document.getElementById('menu-price').value);
+                const category = document.getElementById('menu-category').value;
+                const desc = document.getElementById('menu-desc').value;
+                const image = document.getElementById('menu-image').value;
+
+                if (id) {
+                    // Logika U (Update)
+                    const index = menuData.findIndex(item => item.id == id);
+                    if (index !== -1) {
+                        menuData[index] = { id: Number(id), name, price, category, desc, image };
+                    }
+                    console.log(`Menu ID ${id} diperbarui.`);
+                } else {
+                    // Logika C (Create)
+                    const newItem = {
+                        id: nextId++,
+                        name,
+                        price,
+                        category,
+                        desc,
+                        image
+                    };
+                    menuData.push(newItem);
+                    console.log(`Menu baru '${name}' ditambahkan.`);
+                }
+                
+                renderTable();
+                hideModal();
+                // CATATAN: Di aplikasi nyata, di sini Anda akan memanggil API POST atau PUT.
+            });
+
+            // Fungsi D (Delete): Handle Penghapusan
+            function deleteMenu(id) {
+                if (confirm(`Anda yakin ingin menghapus Menu ID ${id}?`)) {
+                    menuData = menuData.filter(item => item.id !== id);
+                    renderTable();
+                    console.log(`Menu ID ${id} dihapus.`);
+                    // CATATAN: Di aplikasi nyata, di sini Anda akan memanggil API DELETE.
+                }
+            }
+
+            // --- FUNGSI MODAL ---
+            
+            function showModal(title, item = null) {
+                modalTitle.textContent = title;
+                menuForm.reset(); // Reset form
+
+                if (item) {
+                    // Isi form untuk Edit (Update)
+                    document.getElementById('menu-id').value = item.id;
+                    document.getElementById('menu-name').value = item.name;
+                    document.getElementById('menu-price').value = item.price;
+                    document.getElementById('menu-category').value = item.category;
+                    document.getElementById('menu-desc').value = item.desc;
+                    document.getElementById('menu-image').value = item.image;
+                    document.getElementById('save-menu-btn').textContent = 'Simpan Perubahan';
+                } else {
+                    // Persiapan untuk Tambah Baru (Create)
+                    document.getElementById('menu-id').value = ''; // Pastikan ID kosong
+                    document.getElementById('save-menu-btn').textContent = 'Simpan';
+                }
+                crudModal.classList.remove('hidden');
+            }
+
+            function hideModal() {
+                crudModal.classList.add('hidden');
+            }
+            
+            // --- EVENT LISTENERS ---
+
+            // Buka modal untuk Tambah Baru
+            addMenuBtn.addEventListener('click', () => {
+                showModal('Tambah Menu Baru');
+            });
+
+            // Tutup Modal
+            [closeModalBtn, cancelModalBtn].forEach(btn => {
+                btn.addEventListener('click', hideModal);
+            });
+            crudModal.addEventListener('click', (e) => {
+                if (e.target === crudModal) hideModal();
+            });
+
+            // Event Listeners Tabel (Edit & Hapus)
+            function attachTableListeners() {
+                document.querySelectorAll('.edit-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const id = Number(e.target.dataset.id);
+                        const itemToEdit = menuData.find(item => item.id === id);
+                        if (itemToEdit) {
+                            showModal('Edit Menu', itemToEdit);
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('.delete-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const id = Number(e.target.dataset.id);
+                        deleteMenu(id);
+                    });
+                });
+            }
+
+            // Inisialisasi: Tampilkan tabel saat pertama kali dimuat
+            renderTable();
+        });
+    </script>
+</body>
+</html>

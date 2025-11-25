@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Kelola Pesanan</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-red': '#DC2626',
+                        'dark-gray-text': '#333333',
+                        'light-gray-bg': '#F4F7F9',
+                        'accent-green': '#10B981', // Selesai
+                        'accent-yellow': '#FBBF24', // Diproses
+                        'accent-blue': '#3B82F6', // Baru
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-light-gray-bg text-dark-gray-text">
+
+    <div class="flex h-screen bg-gray-100">
+        
+        <div class="w-64 bg-dark-gray-text text-white flex flex-col">
+            <div class="p-4 text-2xl font-bold text-primary-red border-b border-gray-700">
+                Admin Panel
+            </div>
+            <nav class="flex-1 p-4 space-y-2">
+                <a href="admin-dashboard.html" class="block px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200">
+                    Daftar Menu
+                </a>
+                <a href="admin-kelola-promo.html" class="block px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200">
+                    Kelola Promo
+                </a>
+                <a href="admin-pesanan.html" class="block px-4 py-2 rounded-lg bg-primary-red font-semibold">
+                    Pesanan
+                </a>
+                <a href="admin-pengaturan.html" class="block px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200">
+                    Pengaturan
+                </a>
+            </nav>
+            <div class="p-4 border-t border-gray-700">
+                <a href="index.html" class="w-full text-left py-2 text-red-400 hover:text-red-300 block">
+                    Logout
+                </a>
+            </div>
+        </div>
+
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="bg-white shadow p-4 flex justify-between items-center">
+                <h1 class="text-xl font-semibold">Dashboard / Daftar Pesanan</h1>
+                <span class="text-sm text-gray-600">Halo, Admin!</span>
+            </header>
+
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-dark-gray-text">Manajemen Pesanan</h2>
+                        <div class="flex space-x-2">
+                            <button data-status="all" class="filter-btn bg-gray-200 text-gray-700 px-3 py-1 rounded-lg text-sm font-medium hover:bg-gray-300 transition duration-300">Semua</button>
+                            <button data-status="Baru" class="filter-btn bg-accent-blue/20 text-accent-blue px-3 py-1 rounded-lg text-sm font-medium hover:bg-accent-blue/30 transition duration-300">Baru</button>
+                            <button data-status="Diproses" class="filter-btn bg-accent-yellow/20 text-accent-yellow px-3 py-1 rounded-lg text-sm font-medium hover:bg-accent-yellow/30 transition duration-300">Diproses</button>
+                            <button data-status="Selesai" class="filter-btn bg-accent-green/20 text-accent-green px-3 py-1 rounded-lg text-sm font-medium hover:bg-accent-green/30 transition duration-300">Selesai</button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID Pesanan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Pelanggan</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Harga</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Waktu Pesan</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="order-table-body" class="bg-white divide-y divide-gray-200">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <div id="detail-modal" class="hidden fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-xl w-full p-6">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 id="modal-title" class="text-xl font-bold">Detail Pesanan #<span id="detail-order-id"></span></h3>
+                <button id="close-modal-btn" class="text-gray-500 hover:text-red-500">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <div id="detail-content" class="text-sm">
+                <p class="mb-2"><strong>Pelanggan:</strong> <span id="detail-customer-name"></span></p>
+                <p class="mb-4"><strong>Jenis:</strong> <span id="detail-order-type"></span></p>
+
+                <h4 class="font-semibold border-b pb-1 mb-2">Item Pesanan:</h4>
+                <ul id="detail-items" class="mb-4 space-y-1">
+                    </ul>
+
+                <p class="text-lg font-bold">Total Pembayaran: <span class="text-primary-red" id="detail-total-price"></span></p>
+            </div>
+
+            <div class="mt-6 flex justify-end">
+                <button id="update-status-detail-btn" class="bg-primary-red text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700">Perbarui Status</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Data Pesanan Simulasi
+            let orderData = [
+                { id: 101, name: 'Budi Santoso', total: 60000, time: '11:05', status: 'Baru', type: 'Dine In', items: [{name: 'Ayam Original', qty: 2}, {name: 'Es Teh Manis', qty: 2}] },
+                { id: 102, name: 'Siti Aisyah', total: 26500, time: '11:15', status: 'Diproses', type: 'Take Away', items: [{name: 'Ayam Pedas', qty: 1}, {name: 'Nasi Putih', qty: 1}] },
+                { id: 103, name: 'Joko Anwar', total: 125000, time: '11:20', status: 'Selesai', type: 'Take Away', items: [{name: 'Paket Keluarga', qty: 1}] },
+                { id: 104, name: 'Dewi Lestari', total: 31000, time: '11:35', status: 'Baru', type: 'Dine In', items: [{name: 'Ayam Original', qty: 1}, {name: 'Tahu & Tempe Goreng', qty: 1}, {name: 'Es Jeruk', qty: 1}] },
+            ];
+
+            const tableBody = document.getElementById('order-table-body');
+            const detailModal = document.getElementById('detail-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+
+            // --- FUNGSI UTAMA ---
+
+            // Fungsi Format Status untuk Badge
+            function getStatusBadge(status) {
+                let colorClass;
+                switch (status) {
+                    case 'Baru':
+                        colorClass = 'bg-accent-blue/20 text-accent-blue';
+                        break;
+                    case 'Diproses':
+                        colorClass = 'bg-accent-yellow/20 text-accent-yellow';
+                        break;
+                    case 'Selesai':
+                        colorClass = 'bg-accent-green/20 text-accent-green';
+                        break;
+                    default:
+                        colorClass = 'bg-gray-200 text-gray-700';
+                }
+                return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${colorClass}">${status}</span>`;
+            }
+
+            // Fungsi R (Read): Render Tabel
+            function renderTable(filterStatus = 'all') {
+                tableBody.innerHTML = '';
+                const filteredData = filterStatus === 'all' 
+                    ? orderData 
+                    : orderData.filter(item => item.status === filterStatus);
+                
+                if (filteredData.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="6" class="px-6 py-4 text-center text-gray-500">Tidak ada pesanan dengan status ${filterStatus}.</td></tr>`;
+                    return;
+                }
+
+                filteredData.forEach(item => {
+                    const row = tableBody.insertRow();
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#${item.id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${item.name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp ${item.total.toLocaleString('id-ID')}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${item.time}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-center">${getStatusBadge(item.status)}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                            <button data-id="${item.id}" class="detail-btn text-accent-blue hover:text-blue-700 mr-3">Detail</button>
+                            ${item.status !== 'Selesai' ? `<button data-id="${item.id}" data-current-status="${item.status}" class="update-status-btn text-primary-red hover:text-red-700">Update</button>` : ''}
+                        </td>
+                    `;
+                });
+                attachTableListeners();
+            }
+
+            // Fungsi Update Status (U)
+            function updateStatus(id, currentStatus) {
+                let newStatus;
+                switch (currentStatus) {
+                    case 'Baru':
+                        newStatus = 'Diproses';
+                        break;
+                    case 'Diproses':
+                        newStatus = 'Selesai';
+                        break;
+                    default:
+                        return; // Jangan lakukan apa-apa jika sudah Selesai
+                }
+
+                if (confirm(`Ubah status Pesanan #${id} dari '${currentStatus}' menjadi '${newStatus}'?`)) {
+                    const orderIndex = orderData.findIndex(order => order.id === id);
+                    if (orderIndex !== -1) {
+                        orderData[orderIndex].status = newStatus;
+                        renderTable(document.querySelector('.filter-btn.bg-gray-300, .filter-btn.bg-accent-blue\\/30, .filter-btn.bg-accent-yellow\\/30, .filter-btn.bg-accent-green\\/30')?.dataset.status || 'all');
+                        alert(`Status Pesanan #${id} berhasil diubah menjadi ${newStatus}.`);
+                        // (Backend: Panggil API PUT/PATCH untuk update status di sini)
+                    }
+                }
+            }
+
+            // Fungsi Tampilkan Detail Modal
+            function showDetailModal(id) {
+                const order = orderData.find(o => o.id === id);
+                if (!order) return;
+
+                document.getElementById('detail-order-id').textContent = order.id;
+                document.getElementById('detail-customer-name').textContent = order.name;
+                document.getElementById('detail-order-type').textContent = order.type;
+                document.getElementById('detail-total-price').textContent = `Rp ${order.total.toLocaleString('id-ID')}`;
+
+                const itemsList = document.getElementById('detail-items');
+                itemsList.innerHTML = '';
+                order.items.forEach(item => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${item.qty}x ${item.name}`;
+                    itemsList.appendChild(listItem);
+                });
+                
+                // Atur tombol update status di modal
+                const updateBtn = document.getElementById('update-status-detail-btn');
+                updateBtn.onclick = () => { updateStatus(order.id, order.status); hideModal(detailModal); };
+
+                if (order.status === 'Selesai') {
+                    updateBtn.classList.add('hidden');
+                } else {
+                    updateBtn.classList.remove('hidden');
+                    updateBtn.textContent = order.status === 'Baru' ? 'Tandai sebagai Diproses' : 'Tandai sebagai Selesai';
+                }
+
+                detailModal.classList.remove('hidden');
+            }
+            
+            // --- FUNGSI MODAL ---
+            function hideModal(modalElement) {
+                modalElement.classList.add('hidden');
+            }
+
+            // --- EVENT LISTENERS ---
+
+            // Tutup Modal
+            closeModalBtn.addEventListener('click', () => hideModal(detailModal));
+            detailModal.addEventListener('click', (e) => {
+                if (e.target === detailModal) hideModal(detailModal);
+            });
+
+            // Event Listeners Tabel (Detail & Update Status)
+            function attachTableListeners() {
+                document.querySelectorAll('.detail-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const id = Number(e.target.dataset.id);
+                        showDetailModal(id);
+                    });
+                });
+                
+                document.querySelectorAll('.update-status-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const id = Number(e.target.dataset.id);
+                        const currentStatus = e.target.dataset.currentStatus;
+                        updateStatus(id, currentStatus);
+                    });
+                });
+            }
+
+            // Event Listeners Filter
+            filterButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    filterButtons.forEach(btn => btn.classList.remove('bg-gray-300', 'bg-accent-blue/30', 'bg-accent-yellow/30', 'bg-accent-green/30'));
+                    
+                    const status = e.target.dataset.status;
+                    let activeClass;
+                    switch (status) {
+                        case 'Baru': activeClass = 'bg-accent-blue/30'; break;
+                        case 'Diproses': activeClass = 'bg-accent-yellow/30'; break;
+                        case 'Selesai': activeClass = 'bg-accent-green/30'; break;
+                        default: activeClass = 'bg-gray-300';
+                    }
+                    e.target.classList.add(activeClass);
+                    
+                    renderTable(status);
+                });
+            });
+
+            // Inisialisasi: Tampilkan tabel dengan filter default (Semua) dan aktifkan tombol filter "Semua"
+            renderTable('all');
+            document.querySelector('.filter-btn[data-status="all"]').classList.add('bg-gray-300');
+        });
+    </script>
+</body>
+</html>

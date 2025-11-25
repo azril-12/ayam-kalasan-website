@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Pengaturan</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-red': '#DC2626',
+                        'dark-gray-text': '#333333',
+                        'light-gray-bg': '#F4F7F9',
+                        'accent-green': '#10B981',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-light-gray-bg text-dark-gray-text">
+
+    <div class="flex h-screen bg-gray-100">
+        
+        <div class="w-64 bg-dark-gray-text text-white flex flex-col">
+            <div class="p-4 text-2xl font-bold text-primary-red border-b border-gray-700">
+                Admin Panel
+            </div>
+            <nav class="flex-1 p-4 space-y-2">
+                <a href="admin-dashboard.html" class="block px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200">
+                    Daftar Menu
+                </a>
+                <a href="admin-kelola-promo.html" class="block px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200">
+                    Kelola Promo
+                </a>
+                <a href="admin-pesanan.html" class="block px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200">
+                    Pesanan
+                </a>
+                <a href="admin-pengaturan.html" class="block px-4 py-2 rounded-lg bg-primary-red font-semibold">
+                    Pengaturan
+                </a>
+            </nav>
+            <div class="p-4 border-t border-gray-700">
+                <a href="index.html" class="w-full text-left py-2 text-red-400 hover:text-red-300 block">
+                    Logout
+                </a>
+            </div>
+        </div>
+
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="bg-white shadow p-4 flex justify-between items-center">
+                <h1 class="text-xl font-semibold">Dashboard / Pengaturan Umum</h1>
+                <span class="text-sm text-gray-600">Halo, Admin!</span>
+            </header>
+
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
+                
+                <div id="alert-success" class="hidden bg-accent-green/10 border-l-4 border-accent-green text-accent-green p-4 mb-4 rounded-lg" role="alert">
+                    <p class="font-bold">Berhasil!</p>
+                    <p>Pengaturan telah berhasil disimpan.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
+                    <h2 class="text-2xl font-bold text-dark-gray-text mb-4 border-b pb-2">Informasi Restoran 🏛️</h2>
+                    
+                    <form id="info-form">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="resto-name" class="block text-sm font-medium text-gray-700">Nama Restoran</label>
+                                    <input type="text" id="resto-name" value="R.M. Ayam Kalasan" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                                </div>
+                                <div>
+                                    <label for="resto-phone" class="block text-sm font-medium text-gray-700">Nomor Telepon/WhatsApp</label>
+                                    <input type="tel" id="resto-phone" value="+6281234567890" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                                </div>
+                                <div>
+                                    <label for="resto-email" class="block text-sm font-medium text-gray-700">Email Kontak</label>
+                                    <input type="email" id="resto-email" value="info@ayamkalasan.com" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                                </div>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label for="resto-address" class="block text-sm font-medium text-gray-700">Alamat Lengkap</label>
+                                    <textarea id="resto-address" rows="3" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">Jl. Lezat No. 123, Kota Nikmat, Indonesia</textarea>
+                                </div>
+                                <div>
+                                    <label for="resto-tagline" class="block text-sm font-medium text-gray-700">Tagline Website (SEO)</label>
+                                    <input type="text" id="resto-tagline" value="Ayam Kalasan - Cita Rasa Nusantara yang Legendaris." class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 flex justify-end">
+                            <button type="submit" class="px-6 py-2 bg-primary-red text-white rounded-lg font-semibold hover:bg-red-700 transition duration-300">Simpan Informasi</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h2 class="text-2xl font-bold text-dark-gray-text mb-4 border-b pb-2">Jam Operasional ⏰</h2>
+                    
+                    <form id="hours-form">
+                        <div class="space-y-4">
+                            
+                            <div class="flex items-center space-x-4">
+                                <label class="w-32 text-sm font-medium text-gray-700">Senin - Jumat</label>
+                                <input type="time" id="weekday-open" value="10:00" required class="block border border-gray-300 rounded-md shadow-sm p-2">
+                                <span class="text-gray-500">-</span>
+                                <input type="time" id="weekday-close" value="22:00" required class="block border border-gray-300 rounded-md shadow-sm p-2">
+                            </div>
+
+                            <div class="flex items-center space-x-4">
+                                <label class="w-32 text-sm font-medium text-gray-700">Sabtu - Minggu</label>
+                                <input type="time" id="weekend-open" value="10:00" required class="block border border-gray-300 rounded-md shadow-sm p-2">
+                                <span class="text-gray-500">-</span>
+                                <input type="time" id="weekend-close" value="23:00" required class="block border border-gray-300 rounded-md shadow-sm p-2">
+                            </div>
+
+                            <div class="flex items-center pt-2">
+                                <input type="checkbox" id="is-closed" class="h-4 w-4 text-primary-red border-gray-300 rounded focus:ring-primary-red">
+                                <label for="is-closed" class="ml-2 block text-sm font-medium text-primary-red">Tandai Restoran TUTUP Hari Ini</label>
+                            </div>
+
+                        </div>
+                        
+                        <div class="mt-6 flex justify-end">
+                            <button type="submit" class="px-6 py-2 bg-primary-red text-white rounded-lg font-semibold hover:bg-red-700 transition duration-300">Simpan Jam Operasional</button>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const infoForm = document.getElementById('info-form');
+            const hoursForm = document.getElementById('hours-form');
+            const alertSuccess = document.getElementById('alert-success');
+
+            // Fungsi simulasi menampilkan alert sukses
+            function showAlert() {
+                alertSuccess.classList.remove('hidden');
+                setTimeout(() => {
+                    alertSuccess.classList.add('hidden');
+                }, 3000); // Sembunyikan setelah 3 detik
+            }
+
+            // SIMULASI: Handle Submit Form Informasi Restoran
+            infoForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Di sini Anda akan mengambil semua nilai input form
+                const restoInfo = {
+                    name: document.getElementById('resto-name').value,
+                    phone: document.getElementById('resto-phone').value,
+                    email: document.getElementById('resto-email').value,
+                    address: document.getElementById('resto-address').value,
+                    tagline: document.getElementById('resto-tagline').value
+                };
+
+                console.log('Menyimpan Informasi Restoran:', restoInfo);
+                
+                // (Backend: Panggil API PUT/PATCH untuk menyimpan pengaturan ini ke database)
+
+                showAlert();
+            });
+
+            // SIMULASI: Handle Submit Form Jam Operasional
+            hoursForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const hoursInfo = {
+                    weekdayOpen: document.getElementById('weekday-open').value,
+                    weekdayClose: document.getElementById('weekday-close').value,
+                    weekendOpen: document.getElementById('weekend-open').value,
+                    weekendClose: document.getElementById('weekend-close').value,
+                    isClosed: document.getElementById('is-closed').checked 
+                };
+
+                console.log('Menyimpan Jam Operasional:', hoursInfo);
+                
+                // (Backend: Panggil API PUT/PATCH untuk menyimpan jam operasional ke database)
+                
+                showAlert();
+            });
+            
+            console.log('Pengaturan admin scripts loaded.');
+        });
+    </script>
+</body>
+</html>

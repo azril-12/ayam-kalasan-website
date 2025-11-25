@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Kami - R.M. Ayam Kalasan</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-red': '#DC2626',
+                        'dark-gray-text': '#333333',
+                        'light-gray-bg': '#F8F8F8',
+                        'accent-yellow': '#FBBF24', // Warna untuk penekanan harga/tombol
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Sembunyikan Modal secara default */
+        .modal {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        /* Tampilkan Modal saat aktif */
+        .modal.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        /* Efek hover zoom 5% untuk item menu */
+        .menu-item:hover .menu-image {
+            transform: scale(1.05);
+        }
+        /* Style untuk tombol tab aktif */
+        .tab-active {
+            color: #DC2626; /* primary-red */
+            border-bottom-width: 2px;
+            border-color: #DC2626; /* primary-red */
+            font-weight: 700; /* bold */
+        }
+    </style>
+</head>
+<body class="font-sans bg-light-gray-bg text-dark-gray-text">
+
+    <header class="bg-white shadow-md py-4 sticky top-0 z-50">
+        <nav class="container mx-5 px-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <img src="assets/logo RMkalasan.png" alt="R.M. Ayam Kalasan Logo" class="h-10">
+            </div>
+            <div class="hidden md:flex space-x-6 ml-auto">
+                <a href="index.html" class="text-dark-gray-text hover:text-primary-red transition duration-300 font-medium">Home</a>
+                <a href="menu.html" class="text-primary-red border-b-2 border-primary-red font-semibold">Menu</a>
+                <a href="promo.html" class="text-dark-gray-text hover:text-primary-red transition duration-300 font-medium">Promo</a>
+                <a href="contact.html" class="text-dark-gray-text hover:text-primary-red transition duration-300 font-medium">Contact</a>
+                <a href="location.html" class="text-dark-gray-text hover:text-primary-red transition duration-300 font-medium">Location</a>
+            </div>
+            <button class="md:hidden text-dark-gray-text">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </nav>
+    </header>
+
+    <section id="hero-menu" 
+        class="relative w-full h-96 mx-auto overflow-hidden bg-cover bg-center" 
+        style="background-image: url('assets/slider3.jpg');">
+        <div class="flex flex-col items-center justify-center h-full bg-black bg-opacity-40">
+            <h1 class="text-white text-6xl font-extrabold text-center drop-shadow-lg mb-4 p-4" 
+                style="letter-spacing: 0.1em;">
+                DAFTAR MENU KAMI
+            </h1>
+        </div>
+    </section>
+
+    <main class="container mx-auto px-4 py-16">
+        
+        <div class="flex flex-wrap justify-center space-x-4 mb-10 border-b border-gray-300">
+            <button id="tab-ayam" data-category="ayam" class="tab-button py-2 px-4 text-gray-600 hover:text-primary-red transition duration-300 tab-active">Ayam Kalasan Spesial</button>
+            <button id="tab-pendamping" data-category="pendamping" class="tab-button py-2 px-4 text-gray-600 hover:text-primary-red transition duration-300">Nasi & Pendamping</button>
+            <button id="tab-minuman" data-category="minuman" class="tab-button py-2 px-4 text-gray-600 hover:text-primary-red transition duration-300">Minuman Segar</button>
+        </div>
+
+        <div id="menu-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            
+            <div class="menu-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:shadow-xl" 
+                data-category="ayam"
+                data-name="Ayam Goreng Kalasan"
+                data-price="18000"
+                data-desc="Ayam Kalasan dengan bumbu rempah otentik dan rasa manis gurih yang khas. Pilihan ayam paha atau dada."
+                data-image="assets/ayam goreng.jpg">
+                <div class="h-40 overflow-hidden">
+                    <img src="assets/ayam goreng.jpg" alt="Ayam Kalasan Original" class="menu-image w-full h-full object-cover transition-transform duration-300">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="text-lg font-semibold mb-1 text-dark-gray-text">Ayam Goreng Kalasan</h3>
+                    <p class="text-accent-yellow font-bold text-xl">Rp 18.000</p>
+                </div>
+            </div>
+
+            <div class="menu-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:shadow-xl" 
+                data-category="ayam"
+                data-name="Ayam Kalasan Pedas"
+                data-price="18000"
+                data-desc="Sensasi Kalasan klasik ditambah sentuhan pedas cabai pilihan. Cocok untuk pecinta tantangan rasa!"
+                data-image="assets/ayam pedas.jpg">
+                <div class="h-40 overflow-hidden">
+                    <img src="assets/ayam pedas.jpg" alt="Ayam Kalasan Pedas" class="menu-image w-full h-full object-cover transition-transform duration-300">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="text-lg font-semibold mb-1 text-dark-gray-text">Ayam Kalasan Pedas</h3>
+                    <p class="text-accent-yellow font-bold text-xl">Rp 18.000</p>
+                </div>
+            </div>
+
+             <div class="menu-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:shadow-xl" 
+                data-category="ayam"
+                data-name="Ayam Goreng Kremes"
+                data-price="18000"
+                data-desc="Rasa gurih yang bikin nagih, disajikan dengan kremes super renyah dan bumbu khas."
+                data-image="assets/ayam kremes.jpg">
+                <div class="h-40 overflow-hidden">
+                    <img src="assets/ayam kremes.jpg" alt="Ayam Goreng Kremes" class="menu-image w-full h-full object-cover transition-transform duration-300">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="text-lg font-semibold mb-1 text-dark-gray-text">Ayam Goreng Kremes</h3>
+                    <p class="text-accent-yellow font-bold text-xl">Rp 18.000</p>
+                </div>
+            </div>
+
+            <div class="menu-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:shadow-xl" 
+                data-category="ayam"
+                data-name="Ayam Penyet Kalasan"
+                data-price="18000"
+                data-desc="Ayam goreng crispy yang dipenyet bersama sambal pilihan. Pedasnya nendang, gurihnya bikin nagih."
+                data-image="assets/ayam penyet.jpg">
+                <div class="h-40 overflow-hidden">
+                    <img src="assets/ayam penyet.jpg" alt="Ayam penyet" class="menu-image w-full h-full object-cover transition-transform duration-300">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="text-lg font-semibold mb-1 text-dark-gray-text">Ayam Penyet Kalasan</h3>
+                    <p class="text-accent-yellow font-bold text-xl">Rp 18.000</p>
+                </div>
+            </div>
+
+            <div class="menu-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:shadow-xl" 
+                data-category="ayam"
+                data-name="Ayam Bakar Kalasan"
+                data-price="18000"
+                data-desc="Ayam pilihan yang dibakar dengan bumbu manis-gurih khas dapur kami. Tekstur empuk, aroma panggangnya kuat, dan meresap sampai ke dalam."
+                data-image="assets/ayam bakar.jpg">
+                <div class="h-40 overflow-hidden">
+                    <img src="assets/Ayam bakar.jpg" alt="Ayam bakar" class="menu-image w-full h-full object-cover transition-transform duration-300">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="text-lg font-semibold mb-1 text-dark-gray-text">Ayam Bakar Kalasan</h3>
+                    <p class="text-accent-yellow font-bold text-xl">Rp 18.000</p>
+                </div>
+            </div>
+            
+            <div class="menu-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:shadow-xl"
+                data-category="pendamping"
+                data-name="Nasi Putih Hangat"
+                data-price="5000"
+                data-desc="Nasi putih pulen, disajikan hangat untuk menemani hidangan utama Anda."
+                data-image="assets/rice-bowl.jpg">
+            <div class="h-40 overflow-hidden">
+                    <img src="assets/rice-bowl.jpg" alt="Nasi Putih Hangat" class="menu-image w-full h-full object-cover transition-transform duration-300">
+            </div>
+                <div class="p-4 text-center">
+                    <h3 class="text-lg font-semibold mb-1 text-dark-gray-text">Nasi Putih Hangat</h3>
+                    <p class="text-accent-yellow font-bold text-xl">Rp 5.000</p>
+                </div>
+            </div>
+
+            <div class="menu-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:shadow-xl"
+                data-category="pendamping"
+                data-name="Tahu & Tempe Goreng"
+                data-price="5000"
+                data-desc="Seporsi tahu dan tempe goreng renyah dengan bumbu Kalasan."
+                data-image="assets/temhu.jpg">
+            <div class="h-40 overflow-hidden">
+                    <img src="assets/temhu.jpg" alt="Tahu & Tempe Goreng" class="menu-image w-full h-full object-cover transition-transform duration-300">
+            </div>
+                <div class="p-4 text-center">
+                    <h3 class="text-lg font-semibold mb-1 text-dark-gray-text">Tahu & Tempe Goreng</h3>
+                    <p class="text-accent-yellow font-bold text-xl">Rp 5.000</p>
+                </div>
+            </div>
+
+            <div class="menu-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:shadow-xl"
+                data-category="pendamping"
+                data-name="Gado Gado"
+                data-price="18000"
+                data-desc="Sayuran segar yang disiram bumbu kacang kental dan gurih. Disajikan dengan lontong, telur, dan kerupuk cocok buat yang mau makan sehat tapi tetap nikmat."
+                data-image="assets/gado2.jpg">
+            <div class="h-40 overflow-hidden">
+                <img src="assets/gado2.jpg" alt="gado gado" class="menu-image w-full h-full object-cover transition-transform duration-300">
+            </div>
+                <div class="p-4 text-center">
+                    <h3 class="text-lg font-semibold mb-1 text-dark-gray-text">Gado Gado</h3>
+                    <p class="text-accent-yellow font-bold text-xl">Rp 18.000</p>
+                </div>
+            </div>
+
+            <div class="menu-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:shadow-xl"
+                data-category="pendamping"
+                data-name="Nasi Uduk"
+                data-price="6000"
+                data-desc="Nasi wangi yang dimasak dengan santan dan rempah pilihan. Teksturnya pulen, aromanya harum, cocok jadi pendamping berbagai lauk goreng atau bakar."
+                data-image="assets/Nasi uduk.jpg">
+            <div class="h-40 overflow-hidden">
+                <img src="assets/Nasi uduk.jpg" alt="nasi uduk" class="menu-image w-full h-full object-cover transition-transform duration-300">
+            </div>
+                <div class="p-4 text-center">
+                    <h3 class="text-lg font-semibold mb-1 text-dark-gray-text">Nasi Uduk</h3>
+                    <p class="text-accent-yellow font-bold text-xl">Rp 6.000</p>
+                </div>
+            </div>
+
+            <div class="menu-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:shadow-xl"
+                data-category="pendamping"
+                data-name="Lele Goreng Kremes"
+                data-price="18000"
+                data-desc="Lele segar digoreng sampai garing dengan kremes gurih yang renyah. Disajikan bersama sambal segar dan lalapan kombinasi sempurna buat pecinta makanan tradisional."
+                data-image="assets/lele.jpg">
+                <div class="h-40 overflow-hidden">
+                    <img src="assets/lele.jpg" alt="Lele Kremes" class="menu-image w-full h-full object-cover transition-transform duration-300">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="text-lg font-semibold mb-1 text-dark-gray-text">Lele Goreng Kremes</h3>
+                    <p class="text-accent-yellow font-bold text-xl">Rp 18.000</p>
+                </div>
+            </div>
+
+            <div class="menu-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:shadow-xl"
+                data-category="pendamping"
+                data-name="Ati Ampela Goreng"
+                data-price="10000"
+                data-desc="Ati ampela yang dibumbui hingga meresap lalu digoreng sampai matang sempurna. Gurih, enak, dan cocok jadi lauk tambahan atau jadi favorit pecinta ati ampela."
+                data-image="assets/ampela.jpg">
+                <div class="h-40 overflow-hidden">
+                    <img src="assets/ampela.jpg" alt="Ati Ampela" class="menu-image w-full h-full object-cover transition-transform duration-300">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="text-lg font-semibold mb-1 text-dark-gray-text">Ati Ampela Goreng</h3>
+                    <p class="text-accent-yellow font-bold text-xl">Rp 10.000</p>
+                </div>
+            </div>
+ 
+            <div class="menu-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:shadow-xl" 
+                data-category="minuman"
+                data-name="Teh manis Es/Hangat"
+                data-price="5000"
+                data-desc="Teh segar, cocok untuk penghilang dahaga yang sempurna."
+                data-image="assets/iced-lemon-tea.jpg">
+                <div class="h-40 overflow-hidden">
+                    <img src="assets/iced-lemon-tea.jpg" alt="Es Teh Manis" class="menu-image w-full h-full object-cover transition-transform duration-300">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="text-lg font-semibold mb-1 text-dark-gray-text">Teh manis Es/Hangat</h3>
+                    <p class="text-accent-yellow font-bold text-xl">Rp 5.000</p>
+                </div>
+            </div>
+
+            <div class="menu-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:shadow-xl" 
+                data-category="minuman"
+                data-name="Es/Hangat Jeruk"
+                data-price="7000"
+                data-desc="Perasan jeruk asli yang menyegarkan, disajikan dingin/Hangat."
+                data-image="assets/jeruk.jpg">
+                <div class="h-40 overflow-hidden">
+                    <img src="assets/jeruk.jpg" alt="Es Jeruk Segar" class="menu-image w-full h-full object-cover transition-transform duration-300">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="text-lg font-semibold mb-1 text-dark-gray-text">Es/Hangat Jeruk</h3>
+                    <p class="text-accent-yellow font-bold text-xl">Rp 7.000</p>
+                </div>
+            </div>
+
+            <div class="menu-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:shadow-xl" 
+                data-category="minuman"
+                data-name="Kopi"
+                data-price="5000"
+                data-desc="Dibuat dari kopi pilihan, cocok untuk yang suka bersantai."
+                data-image="assets/kopi.jpg">
+                <div class="h-40 overflow-hidden">
+                    <img src="assets/kopi.jpg" alt="kopi" class="menu-image w-full h-full object-cover transition-transform duration-300">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="text-lg font-semibold mb-1 text-dark-gray-text">Kopi</h3>
+                    <p class="text-accent-yellow font-bold text-xl">Rp 5.000</p>
+                </div>
+            </div>
+
+            <div class="menu-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:shadow-xl" 
+                data-category="minuman"
+                data-name="Strobery Milkshake"
+                data-price="10000"
+                data-desc="Milkshake stroberi creamy dengan rasa manis segar. Dibuat dari stroberi pilihan dan susu yang lembut—segar, manis, dan bikin nagih."
+                data-image="assets/strobery.jpg">
+                <div class="h-40 overflow-hidden">
+                    <img src="assets/strobery.jpg" alt="strobery" class="menu-image w-full h-full object-cover transition-transform duration-300">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="text-lg font-semibold mb-1 text-dark-gray-text">Strobery Milkshake</h3>
+                    <p class="text-accent-yellow font-bold text-xl">Rp 10.000</p>
+                </div>
+            </div>
+
+            <div class="menu-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:shadow-xl" 
+                data-category="minuman"
+                data-name="Es Markisa Jeruk Songkit"
+                data-price="7000"
+                data-desc="Perpaduan markisa segar dan jeruk yang asam-manis menyegarkan. Cocok diminum siang hari, bikin seger lagi dalam sekali teguk."
+                data-image="assets/jeruk markisa.jpg">
+                <div class="h-40 overflow-hidden">
+                    <img src="assets/jeruk markisa.jpg" alt="markisa jeruk" class="menu-image w-full h-full object-cover transition-transform duration-300">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="text-lg font-semibold mb-1 text-dark-gray-text">Es Markisa Jeruk Songkit</h3>
+                    <p class="text-accent-yellow font-bold text-xl">Rp 7.000</p>
+                </div>
+            </div>
+
+            <div class="menu-item bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition duration-300 hover:shadow-xl" 
+                data-category="minuman"
+                data-name="Susu Coklat Vanila"
+                data-price="5000"
+                data-desc="Minuman susu creamy dengan kombinasi coklat dan aroma vanila yang lembut."
+                data-image="assets/coklatsusu.jpg">
+                <div class="h-40 overflow-hidden">
+                    <img src="assets/coklatsusu.jpg" alt="coklat vanila" class="menu-image w-full h-full object-cover transition-transform duration-300">
+                </div>
+                <div class="p-4 text-center">
+                    <h3 class="text-lg font-semibold mb-1 text-dark-gray-text">Susu Coklat Vanila</h3>
+                    <p class="text-accent-yellow font-bold text-xl">Rp 5.000</p>
+                </div>
+            </div>
+    </main>
+
+    <div id="menu-modal" class="modal fixed inset-0 z-[100] bg-black bg-opacity-70 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full transform scale-100 transition-transform duration-300" 
+            id="modal-content-container">
+            
+            <div class="flex justify-end p-4 pb-0">
+                <button id="close-modal" class="text-gray-500 hover:text-primary-red transition duration-200">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <div class="p-8 pt-2">
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div class="md:w-1/2 flex justify-center">
+                        <img id="modal-image" src="" alt="Produk" class="w-full h-auto max-h-64 object-cover rounded-lg shadow-md">
+                    </div>
+
+                    <div class="md:w-1/2">
+                        <h2 id="modal-name" class="text-3xl font-bold text-dark-gray-text mb-2">Nama Produk</h2>
+                        
+                        <p class="text-primary-red font-extrabold text-3xl mb-4">
+                            Rp <span id="modal-price">0.000</span>
+                        </p>
+
+                        <p id="modal-desc" class="text-gray-600 text-sm mb-6">Deskripsi produk di sini.</p>
+
+                        <h3 class="font-semibold text-lg mb-3">Pilihan Pemesanan:</h3>
+                        <div class="flex space-x-4">
+                            <button class="flex-1 bg-accent-yellow text-dark-gray-text font-bold py-3 rounded-lg hover:bg-yellow-500 transition duration-300 shadow-md">
+                                Dine In
+                            </button>
+                            <button class="flex-1 bg-primary-red text-white font-bold py-3 rounded-lg hover:bg-red-700 transition duration-300 shadow-md">
+                                Take Away
+                            </button>
+                        </div>
+                        <p class="text-xs text-center text-gray-500 mt-2">*Opsi ini akan mengarahkan ke halaman pemesanan/kasir.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="bg-dark-gray-text text-gray-300 py-10 mt-12">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+            
+            <div>
+                <img src="assets/logo RMkalasan.png" alt="R.M. Ayam Kalasan Logo" class="h-12 mb-4">
+                <p class="text-sm mb-4">Ayam Kalasan - Cita Rasa Nusantara yang Legendaris.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                        <img src="https://img.icons8.com/ios-filled/24/ffffff/whatsapp.png" alt="WhatsApp" class="h-6 w-6">
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                        <img src="https://img.icons8.com/ios-filled/24/ffffff/instagram-new.png" alt="Instagram" class="h-6 w-6">
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                        <img src="https://img.icons8.com/ios-filled/24/ffffff/tiktok.png" alt="TikTok" class="h-6 w-6">
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="text-lg font-semibold text-white mb-4">Quick Links</h4>
+                <ul>
+                    <li class="mb-2"><a href="index.html" class="hover:text-primary-red transition duration-300">Home</a></li>
+                    <li class="mb-2"><a href="promo.html" class="hover:text-primary-red transition duration-300">Promo</a></li>
+                    <li class="mb-2"><a href="contact.html" class="hover:text-primary-red transition duration-300">Contact Us</a></li>
+                    <li class="mb-2"><a href="location.html" class="hover:text-primary-red transition duration-300">Location</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-lg font-semibold text-white mb-4">Kontak Kami</h4>
+                <p class="mb-2">Email: info@ayamkalasan.com</p>
+                <p class="mb-2">Telepon: +62 812 3456 7890</p>
+                <p class="mb-2">Alamat: Jl. Lezat No. 123, Kota Nikmat, Indonesia</p>
+            </div>
+
+            <div>
+                <h4 class="text-lg font-semibold text-white mb-4">Jam Buka</h4>
+                <p class="mb-2">Senin - Jumat: 10:00 - 22:00</p>
+                <p class="mb-2">Sabtu - Minggu: 10:00 - 23:00</p>
+            </div>
+        </div>
+        <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-500">
+            &copy; 2023 R.M. Ayam Kalasan. All Rights Reserved.
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuItems = document.querySelectorAll('.menu-item');
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const modal = document.getElementById('menu-modal');
+            const closeModalButton = document.getElementById('close-modal');
+            
+            // Elemen di dalam modal
+            const modalImage = document.getElementById('modal-image');
+            const modalName = document.getElementById('modal-name');
+            const modalPrice = document.getElementById('modal-price');
+            const modalDesc = document.getElementById('modal-desc');
+
+            // --- FUNGSI TAB MENU ---
+            function switchCategory(selectedCategory) {
+                // 1. Reset style tombol tab
+                tabButtons.forEach(button => {
+                    button.classList.remove('tab-active');
+                });
+
+                // 2. Tandai tombol yang aktif
+                document.querySelector(`.tab-button[data-category="${selectedCategory}"]`).classList.add('tab-active');
+
+                // 3. Filter item menu
+                menuItems.forEach(item => {
+                    const itemCategory = item.getAttribute('data-category');
+                    if (itemCategory === selectedCategory) {
+                        item.style.display = 'block'; // Tampilkan item yang sesuai
+                    } else {
+                        item.style.display = 'none'; // Sembunyikan item yang tidak sesuai
+                    }
+                });
+            }
+
+            // Tambahkan Event Listener ke tombol tab
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const category = button.getAttribute('data-category');
+                    switchCategory(category);
+                });
+            });
+
+            // Set kategori default saat halaman dimuat
+            switchCategory('ayam'); 
+
+
+            // --- FUNGSI MODAL MENU ---
+
+            // Fungsi untuk menampilkan modal dengan data
+            function openModal(item) {
+                // Ambil data dari atribut data-*
+                const name = item.getAttribute('data-name');
+                const price = item.getAttribute('data-price');
+                const desc = item.getAttribute('data-desc');
+                const image = item.getAttribute('data-image');
+
+                // Isi modal dengan data
+                modalImage.src = image;
+                modalName.textContent = name;
+                modalPrice.textContent = Number(price).toLocaleString('id-ID'); 
+                modalDesc.textContent = desc;
+
+                // Tampilkan modal dan nonaktifkan scroll body
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; 
+            }
+
+            // Tambahkan event listener ke setiap item menu
+            menuItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    // Pastikan item terlihat sebelum memanggil modal, meskipun ini seharusnya tidak perlu
+                    if (item.style.display !== 'none') {
+                        openModal(item);
+                    }
+                });
+            });
+
+            // Fungsi untuk menutup modal
+            function closeModal() {
+                modal.classList.remove('active');
+                document.body.style.overflow = ''; // Aktifkan scroll body kembali
+            }
+
+            // Tutup modal ketika tombol X diklik
+            closeModalButton.addEventListener('click', closeModal);
+
+            // Tutup modal ketika mengklik di luar area modal (backdrop)
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Tutup modal ketika tombol ESC ditekan
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+
+            console.log('Menu interaction scripts loaded.');
+        });
+    </script>
+</body>
+</html>

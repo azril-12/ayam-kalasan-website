@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promo Spesial R.M. Ayam Kalasan</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style type="text/tailwindcss">
+        /* Utility Classes yang sudah didefinisikan sebelumnya */
+        @layer utilities {
+            .glowing-red-overlay {
+                position: relative;
+            }
+            /* Efek glowing red overlay pada hover */
+            .glowing-red-overlay::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(255, 0, 0, 0.4); /* Merah semi-transparan */
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out;
+                pointer-events: none;
+                border-radius: 0.5rem; /* Sesuai dengan border-radius parent */
+            }
+            .glowing-red-overlay:hover::before {
+                opacity: 1;
+            }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-red': '#DC2626',
+                        'dark-gray-text': '#333333',
+                        'light-gray-bg': '#F8F8F8',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Style untuk tombol tab aktif */
+        .tab-active {
+            color: #DC2626; /* primary-red */
+            border-bottom-width: 2px;
+            border-color: #DC2626; /* primary-red */
+            font-weight: 700; /* bold */
+        }
+    </style>
+    </head>
+    <body class="font-sans bg-light-gray-bg text-dark-gray-text">
+    <div id="promoModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-[9999]">
+        <div class="bg-white rounded-lg w-11/12 max-w-md p-6 relative">
+            <button onclick="closeModal()" class="absolute top-3 right-3 text-gray-600 text-2xl">&times;</button>
+
+            <img id="modalImage" src="" class="w-full h-48 object-cover rounded-md mb-4">
+            <h2 id="modalTitle" class="text-2xl font-bold mb-2"></h2>
+            <p id="modalDesc" class="text-gray-700"></p>
+        </div>
+    </div>
+
+    <script>
+        function openModal(img, title, desc) {
+            document.getElementById('modalImage').src = img;
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalDesc').innerText = desc;
+
+            const modal = document.getElementById('promoModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('promoModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    </script>
+
+
+    <header class="bg-white shadow-md py-4 sticky top-0 z-50">
+        <nav class="container mx-5 px-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <img src="assets/logo RMkalasan.png" alt="R.M. Ayam Kalasan Logo" class="h-10">
+            </div>
+            <div class="hidden md:flex space-x-6 ml-auto">
+                <a href="index.html" class="text-dark-gray-text hover:text-primary-red transition duration-300 font-medium">Home</a>
+                <a href="menu.html" class="text-dark-gray-text hover:text-primary-red transition duration-300 font-medium">Menu</a>
+                <a href="promo.html" class="text-primary-red border-b-2 border-primary-red font-semibold">Promo</a>
+                <a href="contact.html" class="text-dark-gray-text hover:text-primary-red transition duration-300 font-medium">Contact</a>
+                <a href="location.html" class="text-dark-gray-text hover:text-primary-red transition duration-300 font-medium">Location</a>
+            </div>
+            <button class="md:hidden text-dark-gray-text">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </nav>
+    </header>
+
+    <section id="hero-promo" 
+        class="relative w-10/12 h-96 mx-auto overflow-hidden bg-cover bg-center rounded-xl mt-8 " 
+        style="background-image: url('assets/slider3.jpg');">
+        <div class="flex flex-col items-center justify-center h-full bg-black bg-opacity-40">
+            <h1 class="text-white text-6xl font-extrabold text-center drop-shadow-lg mb-4 p-4" 
+                style="letter-spacing: 0.1em;">
+                PROMO SPESIAL
+            </h1>
+        </div>
+    </section>
+
+    <section id="promo" class="container mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- Promo 1 -->
+        <div class="relative bg-white rounded-lg shadow-lg overflow-hidden glowing-red-overlay group cursor-pointer"
+             onclick="openModal('assets/promo ayam bakar.jpg', 'Diskon Ayam Bakar', 'Dapatkan diskon 20% untuk semua menu ayam bakar. Penawaran berlaku untuk pembelian di tempat (dine-in) dan bawa pulang (takeaway).')">
+            <img src="assets/promo ayam bakar.jpg" alt="Promo 1" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105">
+            <div class="p-4">
+                <h3 class="text-xl font-semibold mb-2">Diskon Ayam Bakar</h3>
+                <p class="text-gray-600 text-sm">Dapatkan diskon 20% untuk semua menu ayam bakar pilihan Anda.</p>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-red-600 bg-opacity-40 text-white text-center font-bold text-lg p-4">
+                TAP UNTUK LIHAT PROMO!
+            </div>
+        </div>
+
+        <!-- Promo 2 -->
+        <div class="relative bg-white rounded-lg shadow-lg overflow-hidden glowing-red-overlay group cursor-pointer"
+             onclick="openModal('assets/promo nasi uduk.jpg', 'Gratis Nasi Uduk', 'Setiap pembelian paket ayam apa pun (minimal Rp50.000), gratis satu porsi nasi uduk lezat kami.')">
+            <img src="assets/promo nasi uduk.jpg" alt="Promo 2" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105">
+            <div class="p-4">
+                <h3 class="text-xl font-semibold mb-2">Gratis Nasi Uduk</h3>
+                <p class="text-gray-600 text-sm">Setiap pembelian paket, gratis nasi uduk lezat.</p>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-red-600 bg-opacity-40 text-white text-center font-bold text-lg p-4">
+                TAP UNTUK LIHAT PROMO!
+            </div>
+        </div>
+
+        <!-- Promo 3 -->
+        <div class="relative bg-white rounded-lg shadow-lg overflow-hidden glowing-red-overlay group cursor-pointer"
+             onclick="openModal('assets/promo keluarga.jpeg', 'Paket Keluarga Hemat', 'Nikmati kebersamaan keluarga dengan paket spesial yang berisi 4 ayam, 4 nasi, dan 4 es teh. Hemat hingga 35%!')">
+            <img src="assets/promo keluarga.jpeg" alt="Promo 3" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105">
+            <div class="p-4">
+                <h3 class="text-xl font-semibold mb-2">Paket Keluarga Hemat</h3>
+                <p class="text-gray-600 text-sm">Nikmati kebersamaan dengan paket keluarga super hemat.</p>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-red-600 bg-opacity-40 text-white text-center font-bold text-lg p-4">
+                TAP UNTUK LIHAT PROMO!
+            </div>
+        </div>
+
+        <!-- Promo 4 -->
+        <div class="relative bg-white rounded-lg shadow-lg overflow-hidden glowing-red-overlay group cursor-pointer"
+             onclick="openModal('assets/promo minuan segar.jpg', 'Promo Minuman Segar', 'Dapatkan penawaran Beli 2 Gratis 1 untuk semua jus buah segar di menu kami. Berlaku setiap hari Senin - Jumat, jam 14.00 - 17.00. Tidak berlaku untuk layanan pesan antar.')">
+            <img src="assets/promo minuan segar.jpg" alt="Promo 4" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105">
+            <div class="p-4">
+                <h3 class="text-xl font-semibold mb-2">Promo Minuman Segar</h3>
+                <p class="text-gray-600 text-sm">Beli 2 gratis 1 untuk semua varian minuman jus.</p>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-red-600 bg-opacity-40 text-white text-center font-bold text-lg p-4">
+                TAP UNTUK LIHAT PROMO!
+            </div>
+        </div>
+
+     </div>
+    </section>
+
+    <footer class="bg-dark-gray-text text-gray-300 py-10 mt-12">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <img src="assets/logo RMkalasan.png" alt="R.M. Ayam Kalasan Logo" class="h-12 mb-4">
+                <p class="text-sm mb-4">Ayam Kalasan - Cita Rasa Nusantara yang Legendaris.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                        <img src="https://img.icons8.com/ios-filled/24/ffffff/whatsapp.png" alt="WhatsApp" class="h-6 w-6">
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                        <img src="https://img.icons8.com/ios-filled/24/ffffff/instagram-new.png" alt="Instagram" class="h-6 w-6">
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition duration-300">
+                        <img src="https://img.icons8.com/ios-filled/24/ffffff/tiktok.png" alt="TikTok" class="h-6 w-6">
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="text-lg font-semibold text-white mb-4">Quick Links</h4>
+                <ul>
+                    <li class="mb-2"><a href="#hero" class="hover:text-primary-red transition duration-300">Home</a></li>
+                    <li class="mb-2"><a href="#promo" class="hover:text-primary-red transition duration-300">Promo</a></li>
+                    <li class="mb-2"><a href="#gallery" class="hover:text-primary-red transition duration-300">Gallery</a></li>
+                    <li class="mb-2"><a href="#contact" class="hover:text-primary-red transition duration-300">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="text-lg font-semibold text-white mb-4">Kontak Kami</h4>
+                <p class="mb-2">Email: info@ayamkalasan.com</p>
+                <p class="mb-2">Telepon: +62 812 3456 7890</p>
+                <p class="mb-2">Alamat: Jl. Lezat No. 123, Kota Nikmat, Indonesia</p>
+            </div>
+
+            <div>
+                <h4 class="text-lg font-semibold text-white mb-4">Jam Buka</h4>
+                <p class="mb-2">Senin - Jumat: 10:00 - 22:00</p>
+                <p class="mb-2">Sabtu - Minggu: 10:00 - 23:00</p>
+            </div>
+        </div>
+        <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-500">
+            &copy; 2023 R.M. Ayam Kalasan. All Rights Reserved.
+        </div>
+    </footer>
+    
+</body>
+</html>
